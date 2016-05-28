@@ -32,7 +32,7 @@ public class HodiernalWeatherDB {
     }
 
     public synchronized static HodiernalWeatherDB getInstance (Context context) {
-        if (hodiernalWeatherDB != null) {
+        if (hodiernalWeatherDB == null) {
             hodiernalWeatherDB = new HodiernalWeatherDB(context);
         }
         return hodiernalWeatherDB;
@@ -66,7 +66,6 @@ public class HodiernalWeatherDB {
     public void saveCity (City city) {
         if (city != null) {
             ContentValues values = new ContentValues();
-            values.put("id", city.getId());
             values.put("city_name", city.getCityName());
             values.put("city_code", city.getCityCode());
             values.put("province_id", city.getPrivinceId());
@@ -96,7 +95,6 @@ public class HodiernalWeatherDB {
     public void saveCounty (County county) {
         if (county != null) {
             ContentValues values = new ContentValues();
-            values.put("id", county.getId());
             values.put("county_name", county.getCountyName());
             values.put("county_code", county.getCountyCode());
             values.put("city_id", county.getCityId());
@@ -113,7 +111,7 @@ public class HodiernalWeatherDB {
                 county.setId(cursor.getInt(cursor.getColumnIndex("id")));
                 county.setCityId(cursor.getInt(cursor.getColumnIndex("city_id")));
                 county.setCountyCode(cursor.getString(cursor.getColumnIndex("county_code")));
-                county.setCountyName(cursor.getString(cursor.getColumnIndex("cunty_name")));
+                county.setCountyName(cursor.getString(cursor.getColumnIndex("county_name")));
                 list.add(county);
             } while(cursor.moveToNext());
         }
