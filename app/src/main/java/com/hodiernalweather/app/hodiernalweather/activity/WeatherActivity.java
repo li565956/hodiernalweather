@@ -1,5 +1,6 @@
 package com.hodiernalweather.app.hodiernalweather.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -7,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,7 +20,7 @@ import com.hodiernalweather.app.hodiernalweather.util.Utility;
 /**
  * Created by lichnagbo on 2016/5/28.
  */
-public class WeatherActivity extends AppCompatActivity {
+public class WeatherActivity extends AppCompatActivity implements View.OnClickListener{
     private LinearLayout weatherInfoLayout;
     private TextView cityNameText;
     private TextView publishText;
@@ -26,6 +28,10 @@ public class WeatherActivity extends AppCompatActivity {
     private TextView temp1Text;
     private TextView temp2Text;
     private TextView currentDateText;
+
+    private Button switchCity;
+
+    private Button refreshWeather;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,6 +53,10 @@ public class WeatherActivity extends AppCompatActivity {
         } else {
             showWeather();
         }
+        switchCity = (Button) findViewById(R.id.swith_city);
+        refreshWeather = (Button) findViewById(R.id.refresh_weather);
+        switchCity.setOnClickListener(this);
+        refreshWeather.setOnClickListener(this);
     }
 
     private void queryWeatherCode (String countyCode) {
@@ -103,5 +113,27 @@ public class WeatherActivity extends AppCompatActivity {
         currentDateText.setText(pref.getString("currentTime", ""));
         weatherInfoLayout.setVisibility(View.VISIBLE);
         cityNameText.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.swith_city:
+                Intent intent = new Intent(this, ChooseAreaActivity.class);
+                intent.putExtra("from_weather_activity", true);
+                startActivity(intent);
+                finish();
+                break;
+            case R.id.refresh_weather:
+                publishText.setText("同步中...");
+                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+                String weatherCode = pref.getString("weatherCode", "");
+                if (!TextUtils.isEmpty(weatherCode)) {
+                    queryWeatherInfo(weatherCode);
+                }
+                break;
+            default:
+                break;
+        }
     }
 }
