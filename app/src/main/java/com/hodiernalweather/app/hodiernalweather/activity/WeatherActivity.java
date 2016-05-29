@@ -139,4 +139,12 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
                 break;
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        SharedPreferences.Editor pref = PreferenceManager.getDefaultSharedPreferences(this).edit();
+        pref.putBoolean("city_selected", true);
+        pref.commit();
+        finish();
+    }
 }
