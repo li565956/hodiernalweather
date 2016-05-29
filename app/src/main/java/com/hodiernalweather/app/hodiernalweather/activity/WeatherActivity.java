@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.hodiernalweather.app.hodiernalweather.R;
+import com.hodiernalweather.app.hodiernalweather.service.AutoUpdateService;
 import com.hodiernalweather.app.hodiernalweather.util.HttpCollbackListener;
 import com.hodiernalweather.app.hodiernalweather.util.HttpUtil;
 import com.hodiernalweather.app.hodiernalweather.util.Utility;
@@ -113,6 +114,8 @@ public class WeatherActivity extends AppCompatActivity implements View.OnClickLi
         currentDateText.setText(pref.getString("currentTime", ""));
         weatherInfoLayout.setVisibility(View.VISIBLE);
         cityNameText.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 
     @Override
